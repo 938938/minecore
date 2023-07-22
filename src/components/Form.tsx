@@ -32,13 +32,14 @@ const Form = () => {
       case 'intermediate':
         return dispatch(set({ row: 16, cell: 16, mine: 16 }));
       case 'expert':
-        return dispatch(set({ row: 32, cell: 16, mine: 20 }));
+        return dispatch(set({ row: 16, cell: 32, mine: 20 }));
       case 'custom':
         return dispatch(set({ row, cell, mine }));
       default:
         return;
     }
   };
+
   return (
     <div>
       <button name='beginner' onClick={onSubmitHandler}>
