@@ -16,12 +16,10 @@ const Td: React.FC<{ row: number; cell: number }> = ({ row, cell }) => {
         return '-';
       case CODE.CLICKED_MINE:
         return '폭탄';
-      case CODE.OPENED:
-        return 'O';
       case CODE.NORMAL:
         return '';
       default:
-        return '';
+        return code;
     }
   };
   const openCellHandler = () => {

@@ -73,7 +73,33 @@ const dataSlice = createSlice({
     },
     open: (state, action) => {
       const { row, cell } = action.payload;
-      state.tableData[row][cell] = CODE.OPENED;
+      // 주변 지뢰 수 검사
+      let around: number[] = [];
+      if (state.tableData[row - 1]) {
+        // 윗 줄이 있는 경우
+        around = around.concat(
+          state.tableData[row - 1][cell - 1],
+          state.tableData[row - 1][cell],
+          state.tableData[row - 1][cell + 1]
+        );
+      }
+      // 좌우 검사
+      around = around.concat(
+        state.tableData[row][cell - 1],
+        state.tableData[row][cell + 1]
+      );
+      if (state.tableData[row + 1]) {
+        // 아랫 줄이 있는 경우
+        around = around.concat(
+          state.tableData[row + 1][cell - 1],
+          state.tableData[row + 1][cell],
+          state.tableData[row + 1][cell + 1]
+        );
+      }
+      const count = around.filter((ele) =>
+        [CODE.MINE, CODE.FLAG_MINE].includes(ele)
+      ).length; // 지뢰수 추출
+      state.tableData[row][cell] = count;
       state.firstClick = false;
     },
     openMine: (state, action) => {
