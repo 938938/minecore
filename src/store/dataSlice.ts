@@ -73,24 +73,22 @@ const dataSlice = createSlice({
     },
     open: (state, action) => {
       const { row, cell } = action.payload;
-      const target = state.tableData[row][cell];
-
-      if (state.firstClick && target === CODE.MINE) {
-        // 처음 클릭이면서 클릭된 칸이 폭탄칸이면 일반칸으로 변경(다른 일반칸에 폭탄 설정)
+      state.tableData[row][cell] = CODE.OPENED;
+      state.firstClick = false;
+    },
+    openMine: (state, action) => {
+      const { row, cell } = action.payload;
+      // 처음 클릭일 땐 일반칸으로 변경(다른 일반칸에 폭탄 설정)
+      // 해당 배열의 가장 첫번째 노멀칸에 폭탄 설치(추후 랜덤 방법 찾아볼 것)
+      if (state.firstClick) {
         const normalIdx = state.tableData[row].indexOf(CODE.NORMAL);
         state.tableData[row][normalIdx] = CODE.MINE;
         state.tableData[row][cell] = CODE.OPENED;
-      } else {
-        // 처음 클릭이 아니거나 클릭된 칸이 노말칸인 경우
-        if (target === CODE.NORMAL) {
-          state.tableData[row][cell] = CODE.OPENED;
-        } else if (target === CODE.MINE) {
-          // 폭탄 칸이면 폭탄 표시, 게임 중단
-          state.tableData[row][cell] = CODE.CLICKED_MINE;
-          state.ing = false;
-        } // 이미 오픈된 칸이거나 / 깃발칸을 클릭했을 경우엔 아무런 액션도 취하지 않음
+        state.firstClick = false;
+        return;
       }
-      state.firstClick = false;
+      state.tableData[row][cell] = CODE.CLICKED_MINE;
+      state.ing = false;
     },
     // 오른 클릭 액션
     setFlag: (state, action) => {
@@ -118,4 +116,4 @@ const dataSlice = createSlice({
 });
 
 export default dataSlice;
-export const { set, open, setFlag } = dataSlice.actions;
+export const { set, open, openMine, setFlag } = dataSlice.actions;

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import { CODE, open, setFlag } from '../store/dataSlice';
+import { CODE, open, openMine, setFlag } from '../store/dataSlice';
 
 const Td: React.FC<{ row: number; cell: number }> = ({ row, cell }) => {
   const dispatch = useDispatch();
@@ -27,7 +27,14 @@ const Td: React.FC<{ row: number; cell: number }> = ({ row, cell }) => {
   const openCellHandler = () => {
     // 폭탄이 터지거나 게임이 끝났을 경우엔 클릭이벤트가 발생하지 않음
     if (!ing) return;
-    dispatch(open({ row, cell }));
+    switch (tableData[row][cell]) {
+      case CODE.NORMAL:
+        return dispatch(open({ row, cell }));
+      case CODE.MINE:
+        return dispatch(openMine({ row, cell }));
+      default:
+        return;
+    }
   };
   const setFlagHandler = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
