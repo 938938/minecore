@@ -15,9 +15,9 @@ type data = {
 const initialState: data = {
   tableData: [],
   data: {
-    row: 0,
-    cell: 0,
-    mine: 0,
+    row: 8,
+    cell: 8,
+    mine: 8,
   },
   timer: 0,
   ing: false,
@@ -29,6 +29,12 @@ const dataSlice = createSlice({
   // 지뢰 배열, 지뢰 세로 / 가로 / 지뢰 수, 타이머, 게임 진행 여부
   initialState,
   reducers: {
+    // 게임 세팅
+    set: (state, action) => {
+      console.log(action.payload);
+      state.data = { ...action.payload };
+      console.log(state.data);
+    },
     // 오른 클릭 액션
     // 깃발 / 깃발 해제
     // 왼 클릭
@@ -37,3 +43,4 @@ const dataSlice = createSlice({
 });
 
 export default dataSlice;
+export const { set } = dataSlice.actions;
