@@ -89,15 +89,33 @@ const dataSlice = createSlice({
           state.tableData[row][cell] = CODE.CLICKED_MINE;
           state.ing = false;
         } // 이미 오픈된 칸이거나 / 깃발칸을 클릭했을 경우엔 아무런 액션도 취하지 않음
-        state.firstClick = false;
       }
+      state.firstClick = false;
     },
     // 오른 클릭 액션
-    // 깃발 / 깃발 해제
-    // 왼 클릭
-    // 노멀칸, 폭탄칸
+    setFlag: (state, action) => {
+      const { row, cell } = action.payload;
+      const target = state.tableData[row][cell];
+      switch (target) {
+        // 노멀 / 폭탄칸 => 깃발 표시, 깃발 / 깃발폭탄칸 => 노멀표시
+        case CODE.NORMAL:
+          state.tableData[row][cell] = CODE.FLAG;
+          return;
+        case CODE.MINE:
+          state.tableData[row][cell] = CODE.FLAG_MINE;
+          return;
+        case CODE.FLAG:
+          state.tableData[row][cell] = CODE.NORMAL;
+          return;
+        case CODE.FLAG_MINE:
+          state.tableData[row][cell] = CODE.MINE;
+          return;
+        default:
+          return;
+      }
+    },
   },
 });
 
 export default dataSlice;
-export const { set, open } = dataSlice.actions;
+export const { set, open, setFlag } = dataSlice.actions;
