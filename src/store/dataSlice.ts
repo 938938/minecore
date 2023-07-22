@@ -1,26 +1,56 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { Data } from '../model/Type';
 
-type TableData = number[];
-type data = {
-  tableData: TableData[];
-  data: {
-    row: number;
-    cell: number;
-    mine: number;
-  };
-  timer: number;
-  ing: boolean;
+export const CODE = {
+  MINE: -5,
+  NORMAL: -1,
+  FLAG: -2,
+  FLAG_MINE: -3,
+  CLICKED_MINE: -4,
+  OPENED: 0,
 };
 
-const initialState: data = {
+const initialState: Data = {
   tableData: [],
   data: {
-    row: 8,
-    cell: 8,
-    mine: 8,
+    row: 0,
+    cell: 0,
+    mine: 0,
   },
   timer: 0,
   ing: false,
+  firstClick: true,
+};
+
+// 지뢰 심기
+const plantMine = (row: number, cell: number, mine: number) => {
+  const candidate = Array(row * cell)
+    .fill(1)
+    .map((arr, i) => {
+      return i;
+    });
+  const shuffle = [];
+  while (candidate.length > row * cell - mine) {
+    const chosen = candidate.splice(
+      Math.floor(Math.random() * candidate.length),
+      1
+    )[0];
+    shuffle.push(chosen);
+  }
+  const data = [];
+  for (let i = 0; i < row; i++) {
+    const rowData: number[] = [];
+    data.push(rowData);
+    for (let j = 0; j < cell; j++) {
+      rowData.push(CODE.NORMAL);
+    }
+  }
+  for (let k = 0; k < shuffle.length; k++) {
+    const ver = Math.floor(shuffle[k] / cell);
+    const hor = shuffle[k] % cell;
+    data[ver][hor] = CODE.MINE;
+  }
+  return data;
 };
 
 const dataSlice = createSlice({
@@ -32,6 +62,11 @@ const dataSlice = createSlice({
     // 게임 세팅
     set: (state, action) => {
       state.data = { ...action.payload };
+      const { row, cell, mine } = state.data;
+      state.tableData = { ...plantMine(row, cell, mine) };
+    },
+    open: (state, action) => {
+      // 처음 클릭일 경우 => 클릭된 칸이 폭탄칸이면 일반칸으로 변경(다른 일반칸에 폭탄 설정)
     },
     // 오른 클릭 액션
     // 깃발 / 깃발 해제
@@ -41,4 +76,4 @@ const dataSlice = createSlice({
 });
 
 export default dataSlice;
-export const { set } = dataSlice.actions;
+export const { set, open } = dataSlice.actions;

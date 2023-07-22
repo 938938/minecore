@@ -3,7 +3,6 @@ import Form from './components/Form';
 import Table from './components/Table';
 
 function App() {
-  // 첫번째 빈칸을 열었을 때는 터지면 안됨 => 첫번째 칸을 열 때 지뢰 배치가 일어나야 함(게임 시작)
   return (
     <div className='App'>
       {/* 게임 난이도 선택 */}
