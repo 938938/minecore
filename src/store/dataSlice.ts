@@ -24,11 +24,13 @@ const initialState: Data = {
 
 // 지뢰 심기
 const plantMine = (row: number, cell: number, mine: number) => {
+  // 지뢰가 들어갈 칸 설정
   const candidate = Array(row * cell)
     .fill(1)
     .map((arr, i) => {
       return i;
     });
+  // 지뢰를 넣을 자리 설정
   const shuffle = [];
   while (candidate.length > row * cell - mine) {
     const chosen = candidate.splice(
@@ -37,6 +39,7 @@ const plantMine = (row: number, cell: number, mine: number) => {
     )[0];
     shuffle.push(chosen);
   }
+  // 테이블을 설정하는 2차원 배열
   const data = [];
   for (let i = 0; i < row; i++) {
     const rowData: number[] = [];
@@ -45,6 +48,7 @@ const plantMine = (row: number, cell: number, mine: number) => {
       rowData.push(CODE.NORMAL);
     }
   }
+  // shuffle 의 값을 기반으로 지뢰 설정
   for (let k = 0; k < shuffle.length; k++) {
     const ver = Math.floor(shuffle[k] / cell);
     const hor = shuffle[k] % cell;

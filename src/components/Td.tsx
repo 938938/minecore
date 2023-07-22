@@ -4,6 +4,8 @@ import { CODE } from '../store/dataSlice';
 
 const Td: React.FC<{ row: number; cell: number }> = ({ row, cell }) => {
   const { tableData } = useSelector((state: RootState) => state.data);
+
+  // td의 내용 설정. 추후 깃발, 폭발 아이콘 넣을 것.
   const tdTextHandler = (code: number) => {
     switch (code) {
       case CODE.MINE:
