@@ -68,9 +68,29 @@ const dataSlice = createSlice({
       state.data = { ...action.payload };
       const { row, cell, mine } = state.data;
       state.tableData = { ...plantMine(row, cell, mine) };
+      state.firstClick = true;
+      state.ing = true;
     },
     open: (state, action) => {
-      // 처음 클릭일 경우 => 클릭된 칸이 폭탄칸이면 일반칸으로 변경(다른 일반칸에 폭탄 설정)
+      const { row, cell } = action.payload;
+      const target = state.tableData[row][cell];
+
+      if (state.firstClick && target === CODE.MINE) {
+        // 처음 클릭이면서 클릭된 칸이 폭탄칸이면 일반칸으로 변경(다른 일반칸에 폭탄 설정)
+        const normalIdx = state.tableData[row].indexOf(CODE.NORMAL);
+        state.tableData[row][normalIdx] = CODE.MINE;
+        state.tableData[row][cell] = CODE.OPENED;
+      } else {
+        // 처음 클릭이 아니거나 클릭된 칸이 노말칸인 경우
+        if (target === CODE.NORMAL) {
+          state.tableData[row][cell] = CODE.OPENED;
+        } else if (target === CODE.MINE) {
+          // 폭탄 칸이면 폭탄 표시, 게임 중단
+          state.tableData[row][cell] = CODE.CLICKED_MINE;
+          state.ing = false;
+        } // 이미 오픈된 칸이거나 / 깃발칸을 클릭했을 경우엔 아무런 액션도 취하지 않음
+        state.firstClick = false;
+      }
     },
     // 오른 클릭 액션
     // 깃발 / 깃발 해제
