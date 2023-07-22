@@ -31,9 +31,7 @@ const dataSlice = createSlice({
   reducers: {
     // 게임 세팅
     set: (state, action) => {
-      console.log(action.payload);
       state.data = { ...action.payload };
-      console.log(state.data);
     },
     // 오른 클릭 액션
     // 깃발 / 깃발 해제
