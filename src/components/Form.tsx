@@ -42,6 +42,7 @@ const Form = () => {
 
   return (
     <div>
+      <h2>난이도 설정</h2>
       <button name='beginner' onClick={onSubmitHandler}>
         Beginner
       </button>
