@@ -74,6 +74,7 @@ const dataSlice = createSlice({
       state.ing = true;
       state.result = '';
       state.opend = 0;
+      state.timer = 0;
     },
     open: (state, action) => {
       const { row, cell } = action.payload;
@@ -162,15 +163,17 @@ const dataSlice = createSlice({
         state.tableData[row][cell] = count;
       };
       aroundMine(row, cell);
-
       state.firstClick = false;
-      state.opend = state.opend + openCount;
       // 총 칸 수 - 지뢰 수 (노멀 칸 수)와 오픈된 칸 수가 같을 때 === 모든 지뢰를 찾았을 때
-      if (state.data.cell * state.data.row - state.data.mine === state.opend) {
+      if (
+        state.data.cell * state.data.row - state.data.mine ===
+        state.opend + openCount
+      ) {
         // 게임 종료
         state.ing = false;
         state.result = '모든 지뢰를 찾으셨습니다!';
       }
+      state.opend = state.opend + openCount;
     },
     openMine: (state, action) => {
       const { row, cell } = action.payload;
@@ -209,8 +212,11 @@ const dataSlice = createSlice({
           return;
       }
     },
+    countStart: (state, action) => {
+      state.timer += 1;
+    },
   },
 });
 
 export default dataSlice;
-export const { set, open, openMine, setFlag } = dataSlice.actions;
+export const { set, open, openMine, setFlag, countStart } = dataSlice.actions;
