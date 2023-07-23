@@ -1,46 +1,40 @@
-# Getting Started with Create React App
+# 지뢰 찾기
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> 지뢰찾기 게임을 할 수 있습니다.<br>
+> Beginner : 8x8, 8<br>
+> Intermediate : 16x16, 16<br>
+> Expert : 32x16, 20<br>
+> 난이도 커스텀이 가능합니다.
 
-## Available Scripts
+- 사용 스택<br>
+  ReactJS / TypeScript / Redux-toolkit / styled-components / react-icons
 
-In the project directory, you can run:
+<br>
 
-### `npm start`
+<center>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![기본화면](https://velog.velcdn.com/images/938938/post/06e62b7b-744d-4fcc-80fc-42377fa1920f/image.png)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+<br>
 
-### `npm test`
+![실행화면](https://velog.velcdn.com/images/938938/post/d130d046-6818-4f5b-9a4e-1f74edef1537/image.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+</center>
 
-### `npm run build`
+## 사용방법
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. 먼저 터미널에서 npm install 을 실행, 모듈을 설치해주세요.
+2. npm start 를 하면 실행됩니다.
+3. 난이도 설정의 버튼을 클릭하거나, 커스텀 후 설정 버튼을 누르면 게임이 시작됩니다.
+4. 폭탄을 제외한 칸을 모두 열거나, 폭탄을 터트리면 게임이 끝납니다.
+5. 3번 방법을 통해 게임을 다시 시작할 수 있습니다.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+파일 구조
+/src
+├── /components
+├── /model        # type 파일 관련 폴더
+├── /store        # redux-toolkit 관련 폴더
+├ App.js
+└ index.js
+```
