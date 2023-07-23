@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useCallback, useState } from 'react';
 import { set } from '../store/dataSlice';
 import * as S from './Form.style';
 
@@ -9,7 +9,7 @@ const Form = () => {
   const [cell, setCell] = useState<number>(2);
   const [mine, setMine] = useState<number>(1);
 
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     switch (name) {
       case 'row':
@@ -21,25 +21,28 @@ const Form = () => {
       default:
         return;
     }
-  };
+  }, []);
 
   // 난이도 설정
-  const onSubmitHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const { name } = e.currentTarget;
-    switch (name) {
-      case 'beginner':
-        return dispatch(set({ row: 8, cell: 8, mine: 8 }));
-      case 'intermediate':
-        return dispatch(set({ row: 16, cell: 16, mine: 16 }));
-      case 'expert':
-        return dispatch(set({ row: 16, cell: 32, mine: 20 }));
-      case 'custom':
-        return dispatch(set({ row, cell, mine }));
-      default:
-        return;
-    }
-  };
+  const onSubmitHandler = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      const { name } = e.currentTarget;
+      switch (name) {
+        case 'beginner':
+          return dispatch(set({ row: 8, cell: 8, mine: 8 }));
+        case 'intermediate':
+          return dispatch(set({ row: 16, cell: 16, mine: 16 }));
+        case 'expert':
+          return dispatch(set({ row: 16, cell: 32, mine: 20 }));
+        case 'custom':
+          return dispatch(set({ row, cell, mine }));
+        default:
+          return;
+      }
+    },
+    [row, cell, mine, dispatch]
+  );
 
   return (
     <S.Form>
@@ -87,6 +90,7 @@ const Form = () => {
             name='mine'
             value={mine}
             min='1'
+            max={row * cell - 1}
             onChange={onChangeHandler}
           />
         </label>
