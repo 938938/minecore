@@ -22,6 +22,7 @@ const initialState: Data = {
   firstClick: true,
   opend: 0,
   result: '',
+  view: false,
 };
 
 // 지뢰 심기
@@ -215,8 +216,12 @@ const dataSlice = createSlice({
     countStart: (state, action) => {
       state.timer += 1;
     },
+    viewSet: (state, action) => {
+      state.view = !state.view;
+    },
   },
 });
 
 export default dataSlice;
-export const { set, open, openMine, setFlag, countStart } = dataSlice.actions;
+export const { set, open, openMine, setFlag, countStart, viewSet } =
+  dataSlice.actions;

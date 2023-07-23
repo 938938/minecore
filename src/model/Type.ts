@@ -12,4 +12,5 @@ export type Data = {
   firstClick: boolean;
   opend: number;
   result: string;
+  view: boolean;
 };

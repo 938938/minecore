@@ -1,13 +1,16 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ChangeEvent, useCallback, useState } from 'react';
-import { set } from '../store/dataSlice';
+import { set, viewSet } from '../store/dataSlice';
 import * as S from './Form.style';
+import { RootState } from '../store/store';
 
 const Form = () => {
   const dispatch = useDispatch();
   const [row, setRow] = useState<number>(2);
   const [cell, setCell] = useState<number>(2);
   const [mine, setMine] = useState<number>(1);
+
+  const { view } = useSelector((state: RootState) => state.data);
 
   const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -47,17 +50,27 @@ const Form = () => {
   return (
     <S.Form>
       <S.SubTitle>난이도 설정</S.SubTitle>
-      <S.Btns>
-        <S.Btn name='beginner' onClick={onSubmitHandler}>
-          Beginner
-        </S.Btn>
-        <S.Btn name='intermediate' onClick={onSubmitHandler}>
-          Intermediate
-        </S.Btn>
-        <S.Btn name='expert' onClick={onSubmitHandler}>
-          Expert
-        </S.Btn>
-      </S.Btns>
+      <S.SetBox>
+        <S.Btns>
+          <S.Btn name='beginner' onClick={onSubmitHandler}>
+            Beginner
+          </S.Btn>
+          <S.Btn name='intermediate' onClick={onSubmitHandler}>
+            Intermediate
+          </S.Btn>
+          <S.Btn name='expert' onClick={onSubmitHandler}>
+            Expert
+          </S.Btn>
+        </S.Btns>
+        <S.ViewMine>
+          <p>폭탄 보이기</p>
+          <input
+            type='checkbox'
+            checked={view}
+            onChange={() => dispatch(viewSet(1))}
+          />
+        </S.ViewMine>
+      </S.SetBox>
       <S.CustomTitle>커스텀 난이도</S.CustomTitle>
       <S.CustomForm>
         <label>

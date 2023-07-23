@@ -5,13 +5,15 @@ import * as S from './Td.style';
 
 const Td: React.FC<{ row: number; cell: number }> = ({ row, cell }) => {
   const dispatch = useDispatch();
-  const { tableData, ing } = useSelector((state: RootState) => state.data);
+  const { tableData, ing, view } = useSelector(
+    (state: RootState) => state.data
+  );
 
   // td의 내용 설정. 추후 깃발, 폭발 아이콘 넣을 것.
   const tdTextHandler = (code: number) => {
     switch (code) {
       case CODE.MINE:
-        return <S.Mine />;
+        return view ? <S.Mine /> : '';
       case CODE.FLAG:
       case CODE.FLAG_MINE:
         return <S.Flag />;

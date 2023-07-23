@@ -10,6 +10,11 @@ export const SubTitle = styled.h2`
   font-size: 1.3rem;
 `;
 
+export const SetBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const Btns = styled.div`
   display: flex;
   width: 100%;
@@ -26,6 +31,19 @@ export const Btn = styled.button`
     background-color: var(--point-color);
     color: var(--white-color);
     transition: all 0.3s;
+  }
+`;
+
+export const ViewMine = styled.label`
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  width: 100%;
+  p {
+    font-size: 0.9rem;
+  }
+  input {
+    margin-left: 5px;
   }
 `;
 
