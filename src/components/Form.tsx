@@ -1,12 +1,13 @@
 import { useDispatch } from 'react-redux';
 import { ChangeEvent, useState } from 'react';
 import { set } from '../store/dataSlice';
+import * as S from './Form.style';
 
 const Form = () => {
   const dispatch = useDispatch();
-  const [row, setRow] = useState<number>(0);
-  const [cell, setCell] = useState<number>(0);
-  const [mine, setMine] = useState<number>(0);
+  const [row, setRow] = useState<number>(1);
+  const [cell, setCell] = useState<number>(1);
+  const [mine, setMine] = useState<number>(1);
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -41,53 +42,59 @@ const Form = () => {
   };
 
   return (
-    <div>
-      <h2>난이도 설정</h2>
-      <button name='beginner' onClick={onSubmitHandler}>
-        Beginner
-      </button>
-      <button name='intermediate' onClick={onSubmitHandler}>
-        Intermediate
-      </button>
-      <button name='expert' onClick={onSubmitHandler}>
-        Expert
-      </button>
-      <form>
+    <S.Form>
+      <S.SubTitle>난이도 설정</S.SubTitle>
+      <S.Btns>
+        <S.Btn name='beginner' onClick={onSubmitHandler}>
+          Beginner
+        </S.Btn>
+        <S.Btn name='intermediate' onClick={onSubmitHandler}>
+          Intermediate
+        </S.Btn>
+        <S.Btn name='expert' onClick={onSubmitHandler}>
+          Expert
+        </S.Btn>
+      </S.Btns>
+      <S.CustomTitle>커스텀 난이도</S.CustomTitle>
+      <S.CustomForm>
         <label>
-          세로 칸
+          <p>세로 칸</p>
           <input
             type='number'
             placeholder='세로 칸'
             name='row'
             value={row}
+            min='1'
             onChange={onChangeHandler}
           />
         </label>
         <label>
-          가로 칸
+          <p>가로 칸</p>
           <input
             type='number'
             placeholder='가로'
             name='cell'
             value={cell}
+            min='1'
             onChange={onChangeHandler}
           />
         </label>
         <label>
-          지뢰 수
+          <p>지뢰 수</p>
           <input
             type='number'
             placeholder='지뢰'
             name='mine'
             value={mine}
+            min='1'
             onChange={onChangeHandler}
           />
         </label>
-        <button name='custom' onClick={onSubmitHandler}>
+        <S.Btn name='custom' onClick={onSubmitHandler}>
           설정
-        </button>
-      </form>
-    </div>
+        </S.Btn>
+      </S.CustomForm>
+    </S.Form>
   );
 };
 

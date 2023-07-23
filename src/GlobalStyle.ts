@@ -6,6 +6,8 @@ const GlobalStyle = createGlobalStyle`
     --bg-color: #F2E5E5;
     --point-color: #CE7777;
     --default-color: #E8C4C4;
+    --white-color:#ffffff;
+    --black-color:#000000;
 
     --title: 1.5rem;
     --default-font: 1rem;
@@ -28,7 +30,6 @@ const GlobalStyle = createGlobalStyle`
   }
   button{
     cursor:pointer;
-    border:1px solid var(--font-line-color)
   }
 `;
 
