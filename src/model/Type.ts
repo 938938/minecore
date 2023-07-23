@@ -10,4 +10,6 @@ export type Data = {
   timer: number;
   ing: boolean;
   firstClick: boolean;
+  opend: number;
+  result: string;
 };

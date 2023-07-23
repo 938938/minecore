@@ -20,6 +20,8 @@ const initialState: Data = {
   timer: 0,
   ing: false,
   firstClick: true,
+  opend: 0,
+  result: '',
 };
 
 // 지뢰 심기
@@ -70,10 +72,14 @@ const dataSlice = createSlice({
       state.tableData = { ...plantMine(row, cell, mine) };
       state.firstClick = true;
       state.ing = true;
+      state.result = '';
+      state.opend = 0;
     },
     open: (state, action) => {
       const { row, cell } = action.payload;
 
+      // 클릭이 일어났을 때 오픈되는 칸의 수 변수
+      let openCount = 0;
       // 주변 지뢰 수 검사
       const checked: string[] = []; // 중복체크를 막기 위한 배열
       const aroundMine = (row: number, cell: number) => {
@@ -126,7 +132,8 @@ const dataSlice = createSlice({
         const count = around.filter((ele) =>
           [CODE.MINE, CODE.FLAG_MINE].includes(ele)
         ).length; // 지뢰수 추출
-
+        // 오픈된 칸 수 증가
+        openCount += 1;
         // count가 0일 경우(주변에 지뢰가 없을 경우) 주변칸 오픈
         if (count === 0) {
           // 펼쳐낼 주변칸 설정 배열
@@ -155,7 +162,15 @@ const dataSlice = createSlice({
         state.tableData[row][cell] = count;
       };
       aroundMine(row, cell);
+
       state.firstClick = false;
+      state.opend = state.opend + openCount;
+      // 총 칸 수 - 지뢰 수 (노멀 칸 수)와 오픈된 칸 수가 같을 때 === 모든 지뢰를 찾았을 때
+      if (state.data.cell * state.data.row - state.data.mine === state.opend) {
+        // 게임 종료
+        state.ing = false;
+        state.result = '모든 지뢰를 찾으셨습니다!';
+      }
     },
     openMine: (state, action) => {
       const { row, cell } = action.payload;
@@ -170,6 +185,7 @@ const dataSlice = createSlice({
       }
       state.tableData[row][cell] = CODE.CLICKED_MINE;
       state.ing = false;
+      state.result = '지뢰가 터졌습니다. 다시 도전해주세요!';
     },
     // 오른 클릭 액션
     setFlag: (state, action) => {
