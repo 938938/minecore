@@ -72,9 +72,10 @@ const dataSlice = createSlice({
       state.tableData = { ...plantMine(row, cell, mine) };
       state.firstClick = true;
       state.ing = true;
-      state.result = '';
+      // state.result = '';
       state.opend = 0;
       state.timer = 0;
+      state.result = `게임이 진행중입니다. 지뢰 수는 모두 ${state.data.mine}개 입니다.`;
     },
     open: (state, action) => {
       const { row, cell } = action.payload;
