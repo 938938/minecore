@@ -72,7 +72,6 @@ const dataSlice = createSlice({
       state.tableData = { ...plantMine(row, cell, mine) };
       state.firstClick = true;
       state.ing = true;
-      // state.result = '';
       state.opend = 0;
       state.timer = 0;
       state.result = `게임이 진행중입니다. 지뢰 수는 모두 ${state.data.mine}개 입니다.`;
@@ -86,11 +85,11 @@ const dataSlice = createSlice({
       const checked: string[] = []; // 중복체크를 막기 위한 배열
       const aroundMine = (row: number, cell: number) => {
         if (
-          [CODE.OPENED, CODE.FLAG_MINE, CODE.FLAG].includes(
-            state.tableData[row][cell]
-          )
+          [CODE.FLAG_MINE, CODE.FLAG].includes(state.tableData[row][cell]) ||
+          state.tableData[row][cell] >= 0
         ) {
           // 이미 열렸거나 막혀있는 칸 생략
+          // 이미 열린 경우 CODE.OPEND 이상의 값(주변에 지뢰가 있는 경우)도 생략
           return;
         }
         if (
