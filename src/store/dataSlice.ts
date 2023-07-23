@@ -73,33 +73,88 @@ const dataSlice = createSlice({
     },
     open: (state, action) => {
       const { row, cell } = action.payload;
+
       // 주변 지뢰 수 검사
-      let around: number[] = [];
-      if (state.tableData[row - 1]) {
-        // 윗 줄이 있는 경우
+      const checked: string[] = []; // 중복체크를 막기 위한 배열
+      const aroundMine = (row: number, cell: number) => {
+        if (
+          [CODE.OPENED, CODE.FLAG_MINE, CODE.FLAG].includes(
+            state.tableData[row][cell]
+          )
+        ) {
+          // 이미 열렸거나 막혀있는 칸 생략
+          return;
+        }
+        if (
+          row < 0 ||
+          row >= state.tableData.length ||
+          cell < 0 ||
+          cell >= state.tableData[0].length
+        ) {
+          // 상하좌우가 존재하지 않을 경우 생략
+          return;
+        }
+        if (checked.includes(`${row},${cell}`)) {
+          // 이미 검사한 칸일 경우 생략
+          return;
+        } else {
+          // 검사하지 않은 칸일 경우 검사 표시 추가
+          checked.push(`${row},${cell}`);
+        }
+        let around: number[] = [];
+        if (state.tableData[row - 1]) {
+          // 윗 줄이 있는 경우
+          around = around.concat(
+            state.tableData[row - 1][cell - 1],
+            state.tableData[row - 1][cell],
+            state.tableData[row - 1][cell + 1]
+          );
+        }
+        // 좌우 검사
         around = around.concat(
-          state.tableData[row - 1][cell - 1],
-          state.tableData[row - 1][cell],
-          state.tableData[row - 1][cell + 1]
+          state.tableData[row][cell - 1],
+          state.tableData[row][cell + 1]
         );
-      }
-      // 좌우 검사
-      around = around.concat(
-        state.tableData[row][cell - 1],
-        state.tableData[row][cell + 1]
-      );
-      if (state.tableData[row + 1]) {
-        // 아랫 줄이 있는 경우
-        around = around.concat(
-          state.tableData[row + 1][cell - 1],
-          state.tableData[row + 1][cell],
-          state.tableData[row + 1][cell + 1]
-        );
-      }
-      const count = around.filter((ele) =>
-        [CODE.MINE, CODE.FLAG_MINE].includes(ele)
-      ).length; // 지뢰수 추출
-      state.tableData[row][cell] = count;
+        if (state.tableData[row + 1]) {
+          // 아랫 줄이 있는 경우
+          around = around.concat(
+            state.tableData[row + 1][cell - 1],
+            state.tableData[row + 1][cell],
+            state.tableData[row + 1][cell + 1]
+          );
+        }
+        const count = around.filter((ele) =>
+          [CODE.MINE, CODE.FLAG_MINE].includes(ele)
+        ).length; // 지뢰수 추출
+
+        // count가 0일 경우(주변에 지뢰가 없을 경우) 주변칸 오픈
+        if (count === 0) {
+          // 펼쳐낼 주변칸 설정 배열
+          const near = [];
+          if (row - 1 > -1) {
+            // 윗 줄이 존재하는 경우
+            near.push([row - 1, cell - 1]);
+            near.push([row - 1, cell]);
+            near.push([row - 1, cell + 1]);
+          }
+          near.push([row, cell - 1]);
+          near.push([row, cell + 1]);
+          if (row + 1 < state.data.row) {
+            // 아랫 줄이 존재하는 경우
+            near.push([row + 1, cell - 1]);
+            near.push([row + 1, cell]);
+            near.push([row + 1, cell + 1]);
+          }
+          near.forEach((n) => {
+            // 해당 칸이 이미 오픈된 칸이 아닐 경우 주변칸 여는 함수 실행
+            if (state.tableData[n[0]][n[1]] !== CODE.OPENED) {
+              aroundMine(n[0], n[1]);
+            }
+          });
+        }
+        state.tableData[row][cell] = count;
+      };
+      aroundMine(row, cell);
       state.firstClick = false;
     },
     openMine: (state, action) => {
