@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { CODE, open, openMine, setFlag } from '../store/dataSlice';
+import * as S from './Td.style';
 
 const Td: React.FC<{ row: number; cell: number }> = ({ row, cell }) => {
   const dispatch = useDispatch();
@@ -10,16 +11,16 @@ const Td: React.FC<{ row: number; cell: number }> = ({ row, cell }) => {
   const tdTextHandler = (code: number) => {
     switch (code) {
       case CODE.MINE:
-        return 'X';
+        return <S.Mine />;
       case CODE.FLAG:
       case CODE.FLAG_MINE:
-        return '-';
+        return <S.Flag />;
       case CODE.CLICKED_MINE:
-        return '폭탄';
+        return <S.Explosion />;
       case CODE.NORMAL:
         return '';
       default:
-        return code;
+        return code || '';
     }
   };
   const openCellHandler = () => {
@@ -39,9 +40,13 @@ const Td: React.FC<{ row: number; cell: number }> = ({ row, cell }) => {
     dispatch(setFlag({ row, cell }));
   };
   return (
-    <td onClick={openCellHandler} onContextMenu={setFlagHandler}>
+    <S.Td
+      type={tableData[row][cell]}
+      onClick={openCellHandler}
+      onContextMenu={setFlagHandler}
+    >
       {tdTextHandler(tableData[row][cell])}
-    </td>
+    </S.Td>
   );
 };
 

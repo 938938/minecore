@@ -21,5 +21,6 @@ export const TextBox = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  margin: 30px 0;
 `;
 export const Timer = styled(GiSandsOfTime)``;

@@ -5,8 +5,8 @@ import * as S from './Form.style';
 
 const Form = () => {
   const dispatch = useDispatch();
-  const [row, setRow] = useState<number>(1);
-  const [cell, setCell] = useState<number>(1);
+  const [row, setRow] = useState<number>(2);
+  const [cell, setCell] = useState<number>(2);
   const [mine, setMine] = useState<number>(1);
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +64,7 @@ const Form = () => {
             placeholder='세로 칸'
             name='row'
             value={row}
-            min='1'
+            min='2'
             onChange={onChangeHandler}
           />
         </label>
@@ -75,7 +75,7 @@ const Form = () => {
             placeholder='가로'
             name='cell'
             value={cell}
-            min='1'
+            min='2'
             onChange={onChangeHandler}
           />
         </label>
