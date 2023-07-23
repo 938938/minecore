@@ -7,7 +7,9 @@ import { useEffect } from 'react';
 import { countStart } from './store/dataSlice';
 
 function App() {
-  const { result, timer, ing } = useSelector((state: RootState) => state.data);
+  const { result, timer, ing, data } = useSelector(
+    (state: RootState) => state.data
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -27,6 +29,7 @@ function App() {
       <Form />
       {/* 커스텀 입력, 완료 버튼 */}
       {/* 타이머, 게임 완료&실패 여부 */}
+      <p>이번 게임의 지뢰 수 : {data.mine}</p>
       <p>{timer}</p>
       <p>{result}</p>
       <Table />
